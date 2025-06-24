@@ -13,7 +13,7 @@ const {login} = useAuth()
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login",{email, password }
+      const response = await axios.post("https://note-app-backend-ceae.onrender.com/api/auth/login",{email, password }
       );
       if(response.data.success) {
         login(response.data.user)
