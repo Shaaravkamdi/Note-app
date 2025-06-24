@@ -1,8 +1,10 @@
 import express from "express";
 import User from "../models/User.js";
-import bcrypt from "bcrypt";
+// import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
+const bcrypt = require('bcryptjs');
 const router = express.Router();
 
 router.post("/register", async (req, res) => {
@@ -71,8 +73,8 @@ router.post("/login", async (req, res) => {
       .json({ success: false, message: "error in login server" });
   }
 });
-router.get('/verify', async (req, res) =>{
-  return res.status(200).json({success: true, user: req.user})
+router.get('/verify', async (req, res) => {
+  return res.status(200).json({ success: true, user: req.user })
 })
 
 export default router;
