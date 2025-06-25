@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+/* import React, { createContext, useContext, useEffect, useState } from 'react'
 import axios from 'axios';
 
 
@@ -17,7 +17,7 @@ const ContextProvider = ({children}) => {
   useEffect(()=>{
     const verifyUser = async ()=>{
       try {
-        const res =await axios.get('https://note-app-backend-ceae.onrender.com/api/auth/verify', {
+        const res =await axios.get('https://localhost:5000/api/auth/verify', {
           
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -41,4 +41,48 @@ return (
 )
 }
 export const useAuth= () => useContext(authContext)
+export default ContextProvider;
+ */
+
+
+
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import { BASE_URL } from '../config';
+
+const authContext = createContext();
+
+const ContextProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+
+  const login = (user) => setUser(user);
+  const logout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/api/auth/verify`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+        setUser(res.data.success ? res.data.user : null);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    verifyUser();
+  }, []);
+
+  return (
+    <authContext.Provider value={{ user, login, logout }}>
+      {children}
+    </authContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(authContext);
 export default ContextProvider;
