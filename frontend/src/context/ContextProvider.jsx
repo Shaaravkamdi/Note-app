@@ -17,7 +17,7 @@ const ContextProvider = ({children}) => {
   useEffect(()=>{
     const verifyUser = async ()=>{
       try {
-        const res =await axios.get('http://localhost:5000/api/auth/verify', {
+        const res =await axios.get('https://note-app-backend-ceae.onrender.com/api/auth/verify', {
           
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`
