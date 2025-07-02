@@ -1,6 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 import connectTOMongoDB from './db/db.js'
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 import authRouter from './routes/auth.js'
 import noteRouter from './routes/note.js'

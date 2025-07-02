@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from "../context/ContextProvider";
-import { BASE_URL } from '../config';
+
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,19 +11,37 @@ const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post(`${BASE_URL}/api/auth/login`, {
+  //       email, password
+  //     });
+  //     if (response.data.success) {
+  //       login(response.data.user);
+  //       localStorage.setItem("token", response.data.token);
+  //       navigate('/');
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${BASE_URL}/api/auth/login`, {
-        email, password
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/auth/login`,
+        { email, password }
+      );
+
       if (response.data.success) {
         login(response.data.user);
         localStorage.setItem("token", response.data.token);
-        navigate('/');
+        navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Login failed:", error.response?.data || error.message);
     }
   };
 

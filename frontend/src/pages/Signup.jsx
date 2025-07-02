@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { BASE_URL } from '../config';
+
+
+
 
 const Signup = () => {
   const [name, setName] = useState("");
@@ -9,15 +11,32 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post(`${BASE_URL}/api/auth/register`, {
+  //       name, email, password
+  //     });
+  //     if (response.data.success) navigate("/login");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${BASE_URL}/api/auth/register`, {
-        name, email, password
-      });
-      if (response.data.success) navigate("/login");
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/auth/register`,
+        { name, email, password }
+      );
+
+      if (response.data.success) {
+        navigate("/login");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Registration failed:", error.response?.data || error.message);
     }
   };
 

@@ -4,7 +4,8 @@ import NoteModal from "../components/NoteModal";
 import axios from "axios";
 import NoteCard from "../components/NoteCard";
 import { toast } from "react-toastify";
-import { BASE_URL } from "../config";
+
+
 
 const Home = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -27,18 +28,159 @@ const Home = () => {
     );
   }, [query, notes]);
 
+  // const fetchNotes = async () => {
+  //   try {
+  //     const { data } = await axios.get(`${BASE_URL}/api/note`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     setNotes(data.notes);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  //  const addNote = async (title, description) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${BASE_URL}/api/note/add`,
+  //       { title, description },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     );
+  //     if (response.data.success) {
+  //       fetchNotes();
+  //       closeModal();
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const editNote = async (id, title, description) => {
+  //   try {
+  //     const response = await axios.put(
+  //       `${BASE_URL}/api/note/${id}`,
+  //       { title, description },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     );
+  //     if (response.data.success) {
+  //       fetchNotes();
+  //       closeModal();
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  // const deleteNote = async (id) => {
+  //   try {
+  //     const response = await axios.delete(`${BASE_URL}/api/note/${id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
+  //     if (response.data.success) {
+  //       toast.success("Note deleted");
+  //       fetchNotes();
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+
   const fetchNotes = async () => {
     try {
-      const { data } = await axios.get(`${BASE_URL}/api/note`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.warn("No token found");
+        return;
+      }
+
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/note`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       setNotes(data.notes);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching notes:", error.response?.data || error.message);
     }
   };
+
+  const addNote = async (title, description) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/note/add`,
+        { title, description },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        fetchNotes();
+        closeModal();
+      }
+    } catch (error) {
+      console.error("Error adding note:", error.response?.data || error.message);
+    }
+  };
+
+  const editNote = async (id, title, description) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BASE_URL}/api/note/${id}`,
+        { title, description },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        fetchNotes();
+        closeModal();
+      }
+    } catch (error) {
+      console.error("Error editing note:", error.response?.data || error.message);
+    }
+  };
+
+  const deleteNote = async (id) => {
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_BASE_URL}/api/note/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        toast.success("Note deleted");
+        fetchNotes();
+      }
+    } catch (error) {
+      console.error("Error deleting note:", error.response?.data || error.message);
+    }
+  };
+
+
 
   const closeModal = () => {
     setModalOpen(false);
@@ -50,61 +192,7 @@ const Home = () => {
     setModalOpen(true);
   };
 
-  const addNote = async (title, description) => {
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/api/note/add`,
-        { title, description },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (response.data.success) {
-        fetchNotes();
-        closeModal();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  const editNote = async (id, title, description) => {
-    try {
-      const response = await axios.put(
-        `${BASE_URL}/api/note/${id}`,
-        { title, description },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (response.data.success) {
-        fetchNotes();
-        closeModal();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteNote = async (id) => {
-    try {
-      const response = await axios.delete(`${BASE_URL}/api/note/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      if (response.data.success) {
-        toast.success("Note deleted");
-        fetchNotes();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <div className="bg-gray-100 min-h-screen">
