@@ -11,17 +11,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post(`${BASE_URL}/api/auth/register`, {
-  //       name, email, password
-  //     });
-  //     if (response.data.success) navigate("/login");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+ 
 
 
   const handleSubmit = async (e) => {

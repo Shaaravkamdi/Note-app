@@ -18,23 +18,6 @@ const ContextProvider = ({ children }) => {
     setUser(null);
   };
 
-  // useEffect(() => {
-  //   const verifyUser = async () => {
-  //     try {
-  //       const res = await axios.get(`${BASE_URL}/api/auth/verify`, {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       });
-  //       setUser(res.data.success ? res.data.user : null);
-  //     } catch (error) {
-  //       console.log("Verification error:", error.message);
-  //     }
-  //   };
-  //   verifyUser();
-  // }, []);
-
-
   useEffect(() => {
     const verifyUser = async () => {
       try {
